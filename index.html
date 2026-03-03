@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capital Unlocked | Massive Action Plan</title>
+<style>
+  /* System fonts used for preview compatibility - Google Fonts load on hosted version */
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap');
+</style>
+<style>
+  :root {
+    --navy: #0A1628;
+    --navy-mid: #12223E;
+    --navy-light: #1B2F50;
+    --gold: #C9A84C;
+    --gold-light: #E2C47A;
+    --gold-dim: rgba(201,168,76,0.15);
+    --gold-line: rgba(201,168,76,0.3);
+    --white: #F7F3EC;
+    --muted: #8A96A8;
+    --text: #D4CCBE;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  header {
+    padding: 64px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0;
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.1s;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(42px, 6vw, 72px);
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+
+  h1 span {
+    color: var(--gold);
+  }
+
+  .map-subtitle {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.25s;
+  }
+
+  .header-sub {
+    font-size: 15px;
+    color: var(--muted);
+    font-weight: 300;
+    max-width: 520px;
+    line-height: 1.6;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.3s;
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--border);
+    border-top: none;
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.4s;
+  }
+
+  .stat {
+    padding: 24px 28px;
+    border-right: 1px solid var(--border);
+  }
+  .stat:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* TIMELINE SPINE */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 16px;
+    bottom: 16px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--gold), rgba(201,168,76,0.1));
+  }
+
+  /* PHASE BLOCK */
+  .phase {
+    position: relative;
+    margin-bottom: 12px;
+    opacity: 0;
+    transform: translateX(-12px);
+    animation: slideIn 0.5s ease forwards;
+  }
+
+  .phase:nth-child(1) { animation-delay: 0.5s; }
+  .phase:nth-child(2) { animation-delay: 0.65s; }
+  .phase:nth-child(3) { animation-delay: 0.8s; }
+  .phase:nth-child(4) { animation-delay: 0.95s; }
+  .phase:nth-child(5) { animation-delay: 1.1s; }
+  .phase:nth-child(6) { animation-delay: 1.25s; }
+
+  /* SPINE DOT */
+  .phase::before {
+    content: '';
+    position: absolute;
+    left: -33px;
+    top: 22px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--navy);
+    border: 2px solid var(--gold);
+    transition: background 0.2s, transform 0.2s;
+    z-index: 2;
+  }
+
+  .phase.active::before,
+  .phase:hover::before {
+    background: var(--gold);
+    transform: scale(1.2);
+  }
+
+  /* PHASE HEADER (clickable) */
+  .phase-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 24px;
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+  }
+
+  .phase-header:hover {
+    border-color: var(--gold-line);
+    background: var(--navy-light);
+  }
+
+  .phase.active .phase-header {
+    border-color: var(--gold-line);
+    background: var(--navy-light);
+    border-bottom-color: transparent;
+  }
+
+  .phase-tag {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    white-space: nowrap;
+    background: var(--gold-dim);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  .phase-title-group { min-width: 0; }
+
+  .phase-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .phase-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .phase-chevron {
+    color: var(--muted);
+    font-size: 12px;
+    transition: transform 0.3s, color 0.2s;
+    flex-shrink: 0;
+  }
+
+  .phase.active .phase-chevron {
+    transform: rotate(180deg);
+    color: var(--gold);
+  }
+
+  /* PHASE BODY */
+  .phase-body {
+    display: none;
+    background: var(--navy-mid);
+    border: 1px solid var(--gold-line);
+    border-top: none;
+    padding: 0;
+  }
+
+  .phase.active .phase-body {
+    display: block;
+    animation: expandIn 0.3s ease;
+  }
+
+  @keyframes expandIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* OUTCOME BANNER */
+  .outcome-banner {
+    background: var(--gold-dim);
+    border-bottom: 1px solid var(--gold-line);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .outcome-label {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .outcome-text {
+    font-size: 13px;
+    color: var(--white);
+    font-weight: 400;
+  }
+
+  /* DETAIL GRID */
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .detail-cell {
+    padding: 20px 24px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .detail-cell:nth-child(even) { border-right: none; }
+  .detail-cell:nth-last-child(-n+2) { border-bottom: none; }
+
+  .detail-cell-label {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .detail-cell-content {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* MILESTONES */
+  .milestones-section {
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .milestones-label {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+
+  .milestone-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .milestone-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .milestone-check {
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--gold-line);
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .milestone-check.checked {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .milestone-check.checked::after {
+    content: '✓';
+    font-size: 10px;
+    color: var(--navy);
+    font-weight: 700;
+  }
+
+  .milestone-item.checked .milestone-text {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+
+  /* RED FLAG ROW */
+  .red-flag {
+    padding: 14px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(180,50,50,0.06);
+  }
+
+  .red-flag-icon {
+    font-size: 11px;
+    color: #C0574A;
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-family: 'DM Mono', 'Courier New', monospace;
+    letter-spacing: 0.1em;
+  }
+
+  .red-flag-text {
+    font-size: 12px;
+    color: #C0574A;
+    line-height: 1.5;
+  }
+
+  /* NETWORK SECTION */
+  .network-section {
+    margin-top: 56px;
+    margin-bottom: 56px;
+  }
+
+  .network-card {
+    background: var(--navy-mid);
+    border: 1px solid var(--gold-line);
+    padding: 36px;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 1.4s;
+  }
+
+  .network-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    right: 0; height: 2px;
+    background: linear-gradient(to right, var(--gold), transparent);
+  }
+
+  .network-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .network-body {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 28px;
+    max-width: 600px;
+  }
+
+  .gate-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .gate-item {
+    background: var(--navy);
+    padding: 16px 18px;
+  }
+
+  .gate-num {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 9px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-bottom: 6px;
+  }
+
+  .gate-text {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 0;
+    margin-top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 1.6s;
+  }
+
+  .footer-brand {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 16px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .footer-note {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-12px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* RESPONSIVE */
+  .footer-reset-btn {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .footer-reset-btn:hover { border-color: rgba(201,168,76,0.4); color: var(--gold); }
+
+  @media (max-width: 600px) {
+    .container { padding: 0 16px; }
+    header { padding: 36px 0 28px; }
+    h1 { font-size: 40px; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .stat { padding: 16px 18px; }
+    .stat:nth-child(2) { border-right: none; }
+    .stat-num { font-size: 28px; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .detail-cell { border-right: none; }
+    .detail-cell:nth-child(odd) { border-bottom: 1px solid var(--border); }
+    .detail-cell:last-child { border-bottom: none; }
+    .gate-grid { grid-template-columns: 1fr 1fr; }
+    .timeline { padding-left: 24px; }
+    .phase-header { grid-template-columns: 1fr auto; gap: 10px; padding: 14px 16px; }
+    .phase-tag { display: none; }
+    .phase-title { font-size: 16px; }
+    .phase-subtitle { font-size: 11px; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+    .progress-banner { flex-direction: column; align-items: flex-start; gap: 12px; padding: 14px 16px; }
+    .progress-banner-left { gap: 12px; }
+    .progress-day { font-size: 32px; }
+    .progress-right { width: 100%; justify-content: space-between; }
+    .progress-bar-wrap { flex: 1; }
+    .network-card { padding: 24px 20px; }
+    .gate-grid { grid-template-columns: 1fr; }
+    .modal-box { padding: 28px 24px; }
+    .phase::before { left: -21px; width: 10px; height: 10px; }
+    .outcome-banner { padding: 12px 16px; flex-direction: column; align-items: flex-start; gap: 4px; }
+    .detail-cell { padding: 14px 16px; }
+    .milestones-section { padding: 14px 16px; }
+    .red-flag { padding: 12px 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="header-greeting" id="header-greeting"></div>
+    <div class="eyebrow">Capital Unlocked &nbsp;×&nbsp; The Wealth Circle &nbsp;<span id="tier-badge" class="tier-badge" style="display:none;"></span></div>
+    <h1>Massive<br><span>Action Plan</span></h1>
+    <div class="map-subtitle">Your First 60 Days</div>
+    <p class="header-sub">A 60-day roadmap from the moment you join to your first capital close. Click each phase to see exactly what's expected of you and what you'll have in hand.</p>
+  </header>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-num">60</div>
+      <div class="stat-label">Days to First Close</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">$5.6B</div>
+      <div class="stat-label">Deployable Capital in Network</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">FO + PL</div>
+      <div class="stat-label">Family Offices + Private Lenders</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">Weekly</div>
+      <div class="stat-label">Live Calls with Nick &amp; Team</div>
+    </div>
+  </div>
+
+  <!-- EMAIL CADENCE BANNER -->
+  <div class="email-cadence-banner">
+    <div class="email-cadence-left">
+      <span class="email-cadence-icon">&#9993;</span>
+      <div>
+        <div class="email-cadence-title">Emails + Video Trainings Throughout the Program</div>
+        <div class="email-cadence-body">You'll receive regular emails from Nick with video trainings, instructions, and next steps tied to where you are in the roadmap. Videos are accessible both in the emails and inside The Wealth Circle. Each one is worth watching. Don't let them stack up.</div>
+      </div>
+    </div>
+    <div class="email-cadence-tip">Add <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b6d8dfd5ddf6d5d7c6dfc2d7da9bc3d8dad9d5ddd3d298d5d9db">[email&#160;protected]</a></strong> to your contacts so nothing hits spam.</div>
+  </div>
+
+  <!-- PROGRESS BANNER -->
+  <div class="progress-banner" id="progress-banner" style="display:none;"></div>
+
+  <div class="section-label">Your Journey</div>
+
+  <div class="timeline" id="timeline">
+
+    <!-- PHASE 1 -->
+    <div class="phase" data-phase="1">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-tag">Week 1 &nbsp;·&nbsp; Day 0–7</div>
+        <div class="phase-title-group">
+          <div class="phase-title">Foundation + Activation</div>
+          <div class="phase-subtitle">Build the engine before you talk to anyone</div>
+        </div>
+        <div class="phase-chevron">▼</div>
+        <span class="phase-complete-badge">Complete</span>
+      </div>
+      <div class="phase-body">
+        <div class="outcome-banner">
+          <span class="outcome-label">Outcome</span>
+          <span class="outcome-text">Database built, CRM active, community intro posted, offer clarity defined</span>
+        </div>
+
+        <div class="detail-grid">
+          <div class="detail-cell">
+            <div class="detail-cell-label">Training Module</div>
+            <div class="detail-cell-content">Investor Network Launch Guide, building your pipeline, CRM setup, database architecture</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">What You Receive</div>
+            <div class="detail-cell-content">Circle community access, deal board (past deals visible), Week 1 module, Raise OS CRM access (Tier 2 included, Tier 1 add-on)</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">Live Call Focus</div>
+            <div class="detail-cell-content">End of Week 1 orientation: deal introductions, Q&A on outreach setup, community norms</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">The Real Work</div>
+            <div class="detail-cell-content">Capital partners make judgments before the call. Your digital presence, your clarity, your list; that's what gets evaluated first.</div>
+          </div>
+        </div>
+        <!-- RAISE OS: TIER 2 (included) -->
+        <div class="deck-intake-banner" data-tier="2">
+          <div class="deck-intake-left">
+            <div class="deck-intake-label">Next Step: Included with Tier 2</div>
+            <div class="deck-intake-title">Activate Your Raise OS CRM</div>
+            <div class="deck-intake-body">Once you've completed the Investor Network Launch Guide, set up your CRM. Raise OS is our custom CRM built specifically for capital raising, running on GHL. Pre-built pipelines, follow-up sequences, investor tracking, and deal status workflows ready to go. Included in your Tier 2 membership for 12 months. Check your email for your 100% discount code, you will need it at checkout. SMS messaging is available at a small additional cost per message.</div>
+          </div>
+          <a href="https://raiseoscrm.com" target="_blank" class="deck-intake-btn">Get Started with Raise OS</a>
+        </div>
+
+        <!-- RAISE OS: TIER 1 (upsell) -->
+        <div class="deck-intake-banner tier1-upsell" data-tier="1">
+          <div class="deck-intake-left">
+            <div class="deck-intake-label">Next Step: Available Add-On</div>
+            <div class="deck-intake-title">Raise OS CRM, $249/month</div>
+            <div class="deck-intake-body">Once you've completed the Investor Network Launch Guide, set up your CRM. Raise OS is our custom CRM built for capital raising. Pre-built pipelines, investor tracking, follow-up sequences, deal status workflows. Tier 2 members get this included for 12 months. As a Tier 1 member you can add it for $249/month. SMS messaging has a small additional cost per message.</div>
+          </div>
+          <a href="https://raiseoscrm.com" target="_blank" class="deck-intake-btn tier1-btn">Add Raise OS</a>
+        </div>
+
+        <div class="milestones-section">
+          <div class="milestones-label">Milestone Checklist</div>
+          <div class="milestone-list">
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">Intro post live in The Wealth Circle community (thewealthcircle.circle.so)</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">CRM active and first contacts imported (Raise OS or your own tool)</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">Investor database started, minimum 20 names</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">One-sentence deal description written (asset, raise amount, terms, projected return)</span></div>
+          </div>
+        </div>
+        <div class="red-flag">
+          <div class="red-flag-icon">IF YOU'RE BEHIND</div>
+          <div class="red-flag-text">If you haven't posted your intro or started your database yet, do it today before anything else. The first week is about building the engine, and you can't skip this step.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase" data-phase="2">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-tag">Week 2 &nbsp;·&nbsp; Day 8–14</div>
+        <div class="phase-title-group">
+          <div class="phase-title">Build the Deal Investors Chase</div>
+          <div class="phase-subtitle">Submit your deck form, define your LP, start conversations while we build</div>
+        </div>
+        <div class="phase-chevron">▼</div>
+        <span class="phase-complete-badge">Complete</span>
+      </div>
+      <div class="phase-body">
+        <div class="outcome-banner">
+          <span class="outcome-label">Outcome</span>
+          <span class="outcome-text">Deck intake form submitted, target LP defined, investor conversations started, V1 deck in production</span>
+        </div>
+
+        <div class="detail-grid">
+          <div class="detail-cell">
+            <div class="detail-cell-label">Training Module</div>
+            <div class="detail-cell-content">Offer clarity, LP targeting framework, how to run early conversations without a finished deck, real deal example walkthrough</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">What You Receive</div>
+            <div class="detail-cell-content">Institutionally built pitch deck (V1 in 8-10 days, delivered via email), offer clarity worksheet, LP profile builder</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">Live Call Focus</div>
+            <div class="detail-cell-content">Week 2 deal review: members bring deal summaries or early notes for group pressure-testing. Deck not required to participate.</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">The Real Work</div>
+            <div class="detail-cell-content">Private lenders want security. HNW investors want upside. Family offices want scale. Know which one you're targeting before the form goes in. That decision shapes the whole deck.</div>
+          </div>
+        </div>
+        <div class="milestones-section">
+          <div class="milestones-label">Milestone Checklist</div>
+          <div class="milestone-list">
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">Deck intake form submitted via the link in your welcome email</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">Target LP category identified: private lender, HNW individual, or family office</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">3 or more investor conversations initiated, deck or no deck</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">Deal summary or notes brought to live call for group feedback</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">V1 deck received via email from our team</span></div>
+          </div>
+        </div>
+        <!-- DECK INTAKE CALLOUT -->
+        <!-- DECK BUILD: TIER 2 (included) -->
+        <div class="deck-intake-banner" data-tier="2">
+          <div class="deck-intake-left">
+            <div class="deck-intake-label">Included with Tier 2</div>
+            <div class="deck-intake-title">Your Deck Intake Form Arrives by Email</div>
+            <div class="deck-intake-body">At the start of Week 2 you'll receive an email with a Google Form. It asks about your deal, your raise structure, and your target investors. Fill it out completely when it arrives. That submission triggers our team to begin building your institutional pitch deck. The more detail you give, the better V1 comes back. V1 delivers within 8-10 business days of submission, plan for 1-2 revision rounds.</div>
+          </div>
+          <div class="deck-intake-email-badge">&#9993; Watch your inbox</div>
+        </div>
+
+        <!-- DECK BUILD: TIER 1 (upsell) -->
+        <div class="deck-intake-banner tier1-upsell" data-tier="1">
+          <div class="deck-intake-left">
+            <div class="deck-intake-label">Available Add-On</div>
+            <div class="deck-intake-title">Done-For-You Institutional Deck</div>
+            <div class="deck-intake-body">Tier 2 members get their institutional pitch deck built by our team, triggered by an email intake form sent at the start of Week 2. As a Tier 1 member you can add this as a standalone service or upgrade to Tier 2 and get the full network access alongside it. If you've already purchased the add-on, watch for your intake email at the start of Week 2.</div>
+          </div>
+          <div class="deck-intake-cta-group">
+            <a href="YOUR_DECK_ADDON_PURCHASE_URL_HERE" target="_blank" class="deck-intake-btn tier1-btn">Add Deck Build</a>
+            <a href="YOUR_TIER2_UPGRADE_URL_HERE" target="_blank" class="deck-upgrade-link">Or upgrade to Tier 2 &rarr;</a>
+          </div>
+        </div>
+
+        <!-- TIMELINE NOTICE -->
+        <div class="deck-timeline-notice">
+          <span class="deck-timeline-icon">&#9201;</span>
+          <div>
+            <strong>While you wait:</strong> Do not pause investor conversations while the deck is in production. The first conversations don't require a finished deck. Run both in parallel.
+          </div>
+        </div>
+
+        <div class="red-flag">
+          <div class="red-flag-icon">IF YOU'RE BEHIND</div>
+          <div class="red-flag-text">If the form isn't submitted yet, do it now. Every day you wait is a day later your deck arrives. And if you're waiting on the deck before talking to investors, stop. The first conversations don't require a finished deck. Start them today.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase" data-phase="3">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-tag">Week 3 &nbsp;·&nbsp; Day 15–21</div>
+        <div class="phase-title-group">
+          <div class="phase-title">Cold Outreach + Outreach Systems</div>
+          <div class="phase-subtitle">Build a pipeline that doesn't require you to manually chase every lead</div>
+        </div>
+        <div class="phase-chevron">▼</div>
+        <span class="phase-complete-badge">Complete</span>
+      </div>
+      <div class="phase-body">
+        <div class="outcome-banner">
+          <span class="outcome-label">Outcome</span>
+          <span class="outcome-text">Active outreach running, 5+ conversations in pipeline, follow-up sequences live</span>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-cell">
+            <div class="detail-cell-label">Training Module</div>
+            <div class="detail-cell-content">Outreach systems, email and LinkedIn sequences, warm vs. cold approach frameworks, response handling</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">What You Receive</div>
+            <div class="detail-cell-content">Outreach templates (email, LinkedIn, SMS), investor database delivery for qualified members, follow-up cadence guide</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">Live Call Focus</div>
+            <div class="detail-cell-content">Outreach review: what's getting responses, what isn't, live objection handling from real replies</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">The Real Work</div>
+            <div class="detail-cell-content">The message that works leads with what's relevant to them, not what's relevant to you. That's the entire framework. Everything else is execution.</div>
+          </div>
+        </div>
+        <div class="milestones-section">
+          <div class="milestones-label">Milestone Checklist</div>
+          <div class="milestone-list">
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">Active outreach sequences running (email or LinkedIn or both)</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">Minimum 5 active conversations in pipeline</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">Follow-up cadence documented; you know the next step for every open conversation</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">Investor database expanded to at least 40 names</span></div>
+          </div>
+        </div>
+        <div class="red-flag">
+          <div class="red-flag-icon">WATCH</div>
+          <div class="red-flag-text">Having templates but not using them is the most common failure point in Week 3. Templates don't raise capital. Sent messages raise capital.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase" data-phase="4">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-tag">Week 4 &nbsp;·&nbsp; Day 22–28</div>
+        <div class="phase-title-group">
+          <div class="phase-title">The Investor Call + Closing Framework</div>
+          <div class="phase-subtitle">What to say, what not to say, and how to handle every objection</div>
+        </div>
+        <div class="phase-chevron">▼</div>
+        <span class="phase-complete-badge">Complete</span>
+      </div>
+      <div class="phase-body">
+        <div class="outcome-banner">
+          <span class="outcome-label">Outcome</span>
+          <span class="outcome-text">10+ conversations in pipeline, first formal investor calls completed, data room outline drafted</span>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-cell">
+            <div class="detail-cell-label">Training Module</div>
+            <div class="detail-cell-content">Full investor call script, objection handling deep-dive, what to say and not say, handling "let me think about it"</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">What You Receive</div>
+            <div class="detail-cell-content">Full call presentation script, objection handling workbook, two investor call transcripts (one close, one no-close), call tracker</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">Live Call Focus</div>
+            <div class="detail-cell-content">Live call debrief: members review actual conversations, group diagnoses what's working and what's stalling</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">The Real Work</div>
+            <div class="detail-cell-content">"Let me think about it" means something specific. Your job is to find out what before the call ends. The workbook has the exact question to ask.</div>
+          </div>
+        </div>
+        <div class="milestones-section">
+          <div class="milestones-label">Milestone Checklist</div>
+          <div class="milestone-list">
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">10 or more conversations documented in tracker</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">First formal investor calls completed using the call script framework</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">Objection handling workbook reviewed and annotated with your specific deal objections</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">Data room structure outlined, even if content isn't in yet</span></div>
+          </div>
+        </div>
+        <div class="red-flag">
+          <div class="red-flag-icon">WATCH</div>
+          <div class="red-flag-text">Still in preparation mode at Day 25 is a critical signal. If you're polishing the deck instead of having calls, the deck is not the problem.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 5 -->
+    <div class="phase" data-phase="5">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-tag">Week 5 &nbsp;·&nbsp; Day 29–35</div>
+        <div class="phase-title-group">
+          <div class="phase-title">Data Room + Wired & Done</div>
+          <div class="phase-subtitle">Build the room, structure the close, get the wire</div>
+        </div>
+        <div class="phase-chevron">▼</div>
+        <span class="phase-complete-badge">Complete</span>
+      </div>
+      <div class="phase-body">
+        <div class="outcome-banner">
+          <span class="outcome-label">Outcome</span>
+          <span class="outcome-text">Data room live or near-complete, at least two closing conversations actively in progress</span>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-cell">
+            <div class="detail-cell-label">Training Module</div>
+            <div class="detail-cell-content">Data room architecture, what capital partners actually review, how to structure a close and manage the wire conversation</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">What You Receive</div>
+            <div class="detail-cell-content">Data room structure template, closing conversation guide, wire checklist, fund receipt process documentation</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">Live Call Focus</div>
+            <div class="detail-cell-content">Data room review: members share rooms for live feedback before showing to capital partners</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">The Real Work</div>
+            <div class="detail-cell-content">A data room is not a document dump. It's a curated narrative in file form. Executive summary at the top, clean model, operating agreement. Everything else is secondary.</div>
+          </div>
+        </div>
+        <div class="milestones-section">
+          <div class="milestones-label">Milestone Checklist</div>
+          <div class="milestone-list">
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">Data room live with at minimum: executive summary, financial model, deal structure</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">At least two closing conversations actively progressing</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">Wire process documented; you know exactly how funds will be received</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">Deal board submission sent (if qualified for posting)</span></div>
+          </div>
+        </div>
+        <div class="red-flag">
+          <div class="red-flag-icon">WATCH</div>
+          <div class="red-flag-text">Data room still empty or disorganized by Day 32 means closing conversations can't move forward. The room is what capital partners review before committing.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 6 -->
+    <div class="phase" data-phase="6">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-tag">Day 36–60</div>
+        <div class="phase-title-group">
+          <div class="phase-title">Network Introductions + Close</div>
+          <div class="phase-subtitle">Qualified deals introduced to capital partners, wires pursued</div>
+        </div>
+        <div class="phase-chevron">▼</div>
+        <span class="phase-complete-badge">Complete</span>
+      </div>
+      <div class="phase-body">
+        <div class="outcome-banner">
+          <span class="outcome-label">Outcome</span>
+          <span class="outcome-text">Introductions made to private money network, closing momentum maintained, capital committed or wire received</span>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-cell">
+            <div class="detail-cell-label">How Introductions Work</div>
+            <div class="detail-cell-content">We connect you directly with capital partners who are actively deploying into your deal type. You handle the relationship from there. We don't intermediate the negotiation.</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">What You Receive</div>
+            <div class="detail-cell-content">Curated introductions to vetted capital sources (Tier 2 members), ongoing access to deal board, continued live call cadence, community access</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">Live Call Focus</div>
+            <div class="detail-cell-content">Closing strategy: maintaining pipeline momentum, re-engaging cold conversations, handling final close objections</div>
+          </div>
+          <div class="detail-cell">
+            <div class="detail-cell-label">The Real Work</div>
+            <div class="detail-cell-content">Deals don't die from bad pitches at this stage. They die from operators losing the thread. Every open conversation needs a next step that you own.</div>
+          </div>
+        </div>
+        <div class="milestones-section">
+          <div class="milestones-label">Milestone Checklist</div>
+          <div class="milestone-list">
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">Deal summary submitted for network introduction review</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">At least one capital partner introduction completed (Tier 2)</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">All open conversations have a documented next step and follow-up date</span></div>
+            <div class="milestone-item"><div class="milestone-check" onclick="toggleCheck(this)"></div><span class="milestone-text">Capital committed or wire received, or a clear diagnosis of what to fix in month two</span></div>
+          </div>
+        </div>
+        <div class="red-flag">
+          <div class="red-flag-icon">WATCH</div>
+          <div class="red-flag-text">If you're in month two and conversations are going cold, that's a follow-up problem, not a deal quality problem. One-line re-engagement emails are often all it takes.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end timeline -->
+
+  <!-- NETWORK GATES -->
+  <div class="network-section">
+    <div class="section-label">Private Money Network</div>
+    <div class="network-card">
+      <div class="network-title">What Qualifies You for an Introduction</div>
+      <p class="network-body">Network introductions are curated, not automated. We connect qualified operators with capital partners who are actively deploying into their deal type. The gates exist because introduction quality depends on deal readiness. A premature introduction doesn't help anyone.</p>
+      <div class="gate-grid">
+        <div class="gate-item">
+          <div class="gate-num">GATE 01</div>
+          <div class="gate-text">Clean one-page deal summary with asset type, raise amount, terms, and projected returns</div>
+        </div>
+        <div class="gate-item">
+          <div class="gate-num">GATE 02</div>
+          <div class="gate-text">Pitch deck or structured equivalent; doesn't need to be final, must be coherent</div>
+        </div>
+        <div class="gate-item">
+          <div class="gate-num">GATE 03</div>
+          <div class="gate-text">Data room in progress, at minimum: exec summary, financial model, deal structure</div>
+        </div>
+        <div class="gate-item">
+          <div class="gate-num">GATE 04</div>
+          <div class="gate-text">Operator track record or clear team background narrative (first deals considered)</div>
+        </div>
+        <div class="gate-item">
+          <div class="gate-num">GATE 05</div>
+          <div class="gate-text">Raise actively in progress: conversations happening, not in planning phase</div>
+        </div>
+        <div class="gate-item">
+          <div class="gate-num">GATE 06</div>
+          <div class="gate-text">Tier 2 membership required; introductions are not part of the Tier 1 structure</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-brand">Capital Unlocked &nbsp;·&nbsp; The Wealth Circle</div>
+      <button onclick="resetAll()" class="footer-reset-btn">Reset My Tracker</button>
+    <div class="footer-note">Internal Member Resource</div>
+  </footer>
+
+</div><!-- end container -->
+
+<style>
+  /* EMAIL CADENCE BANNER */
+  .email-cadence-banner {
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-left: 3px solid rgba(201,168,76,0.4);
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.45s;
+  }
+
+  .email-cadence-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .email-cadence-icon {
+    font-size: 18px;
+    opacity: 0.5;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .email-cadence-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .email-cadence-body {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .email-cadence-tip {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-line);
+    padding: 10px 14px;
+    flex-shrink: 0;
+    align-self: center;
+    line-height: 1.7;
+    text-align: center;
+    max-width: 220px;
+  }
+
+  .email-cadence-tip strong {
+    display: block;
+    color: var(--white);
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+    text-transform: none;
+    font-size: 10px;
+  }
+
+  /* MODAL EMAIL NOTE */
+  .modal-email-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-line);
+    padding: 12px 14px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .modal-email-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  @media (max-width: 600px) {
+    .email-cadence-banner { flex-direction: column; padding: 16px; }
+    .email-cadence-tip { max-width: 100%; width: 100%; text-align: left; }
+  }
+
+  /* PROGRESS BANNER */
+  .progress-banner {
+    background: var(--navy-mid);
+    border: 1px solid var(--gold-line);
+    border-left: 3px solid var(--gold);
+    padding: 18px 24px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .progress-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .progress-day {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .progress-info {}
+
+  .progress-phase-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 3px;
+  }
+
+  .progress-status {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .progress-status.on-track { color: #6BBF8E; }
+  .progress-status.behind { color: #C0574A; }
+  .progress-status.complete { color: var(--gold); }
+
+  .progress-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .progress-bar-wrap {
+    width: 140px;
+  }
+
+  .progress-bar-label {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-bar-track {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--gold), var(--gold-light));
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  .reset-date-btn {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+
+  .reset-date-btn:hover {
+    color: var(--gold);
+    border-color: var(--gold-line);
+  }
+
+  /* CURRENT PHASE HIGHLIGHT */
+  .phase.current-phase > .phase-header {
+    border-left: 3px solid var(--gold);
+  }
+
+  .phase.current-phase::before {
+    background: var(--gold);
+    box-shadow: 0 0 8px rgba(201,168,76,0.5);
+  }
+
+  /* COMPLETED PHASE */
+  .phase.phase-complete::before {
+    background: #6BBF8E;
+    border-color: #6BBF8E;
+    box-shadow: 0 0 6px rgba(107,191,142,0.35);
+  }
+
+  .phase.phase-complete > .phase-header {
+    opacity: 0.72;
+  }
+
+  .phase.phase-complete > .phase-header:hover {
+    opacity: 1;
+  }
+
+  .phase-complete-badge {
+    display: none;
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #6BBF8E;
+    background: rgba(107,191,142,0.12);
+    padding: 3px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .phase.phase-complete .phase-complete-badge {
+    display: inline-block;
+  }
+
+  /* HEADER GREETING */
+  .header-greeting {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    min-height: 18px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.05s;
+  }
+
+  /* MODAL OVERLAY */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 12, 25, 0.92);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-box {
+    background: var(--navy-mid);
+    border: 1px solid var(--gold-line);
+    max-width: 440px;
+    width: 100%;
+    padding: 40px;
+    position: relative;
+  }
+
+  .modal-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--gold), transparent);
+  }
+
+  .modal-eyebrow {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .modal-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 10px;
+    line-height: 1.1;
+  }
+
+  .modal-body {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  .modal-input-label {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .modal-input {
+    width: 100%;
+    background: var(--navy);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 20px;
+    -webkit-appearance: none;
+    color-scheme: dark;
+  }
+
+  .modal-input:focus {
+    border-color: var(--gold-line);
+  }
+
+  .modal-btn {
+    width: 100%;
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 14px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+
+  .modal-btn:hover { background: var(--gold-light); }
+
+  /* DECK INTAKE BANNER */
+  .deck-intake-banner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    background: rgba(201,168,76,0.08);
+    border-bottom: 1px solid var(--gold-line);
+    border-top: 1px solid var(--gold-line);
+    padding: 20px 24px;
+    flex-wrap: wrap;
+  }
+
+  .deck-intake-left { flex: 1; min-width: 200px; }
+
+  .deck-intake-label {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 8px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .deck-intake-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .deck-intake-body {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .deck-intake-btn {
+    display: inline-flex;
+    align-items: center;
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 12px 18px;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.2s;
+    align-self: center;
+  }
+
+  .deck-intake-btn:hover { background: var(--gold-light); }
+
+  /* DECK TIMELINE NOTICE */
+  .deck-timeline-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 24px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .deck-timeline-notice strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .deck-timeline-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 600px) {
+    .deck-intake-banner { flex-direction: column; padding: 16px; }
+    .deck-intake-btn { width: 100%; justify-content: center; }
+    .deck-timeline-notice { padding: 12px 16px; }
+  }
+
+  /* REFRAMED RED FLAG */
+  .red-flag {
+    background: rgba(180,50,50,0.06);
+  }
+
+  .red-flag-icon {
+    color: #C0574A;
+  }
+
+  .red-flag-text {
+    color: #C8736A;
+  }
+
+  /* TIER BADGE */
+  .tier-badge {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--gold-dim);
+    color: var(--gold);
+    padding: 3px 8px;
+    border-radius: 2px;
+    vertical-align: middle;
+  }
+
+  /* TIER 1 UPSELL VARIANT */
+  .tier1-upsell {
+    background: rgba(255,255,255,0.03);
+    border-color: var(--border);
+    border-top-color: var(--border);
+    border-bottom-color: var(--border);
+  }
+
+  .tier1-upsell .deck-intake-label {
+    color: var(--muted);
+  }
+
+  .tier1-btn {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold-line);
+  }
+
+  .tier1-btn:hover {
+    background: var(--gold-dim);
+  }
+
+  .deck-intake-cta-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  .deck-upgrade-link {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+
+  .deck-upgrade-link:hover { color: var(--gold); }
+
+  /* EMAIL BADGE */
+  .deck-intake-email-badge {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-line);
+    padding: 10px 16px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  @media (max-width: 600px) {
+    .deck-intake-cta-group { align-items: flex-start; width: 100%; }
+    .deck-upgrade-link { font-size: 10px; }
+  }
+
+  /* milestone progress counter */
+  .milestones-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .milestone-counter {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+</style>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ---- STATE (memory fallback for sandboxed preview) ----
+var _mem = {};
+function loadState() {
+  try { return JSON.parse(localStorage.getItem('cu_map_v1')) || _mem; } catch(e) { return _mem; }
+}
+function saveState(s) {
+  _mem = s;
+  try { localStorage.setItem('cu_map_v1', JSON.stringify(s)); } catch(e) {}
+}
+
+// ---- TIER TOKENS ----
+var TIERS = { 'cu2-s28m1fco': 2, 'cu1-iu4ugki2': 1 };
+
+function getTier() {
+  var p = new URLSearchParams(window.location.search).get('access');
+  if (p && TIERS[p]) return TIERS[p];
+  return loadState().tier || null;
+}
+
+function applyTier() {
+  var tier = getTier();
+  var p = new URLSearchParams(window.location.search).get('access');
+  if (p && TIERS[p]) { var s = loadState(); s.tier = tier; saveState(s); }
+  var els = document.querySelectorAll('[data-tier]');
+  for (var i = 0; i < els.length; i++) {
+    var elTier = parseInt(els[i].getAttribute('data-tier'));
+    els[i].style.display = (!tier || tier === elTier) ? '' : 'none';
+  }
+  var badge = document.getElementById('tier-badge');
+  if (badge && tier) { badge.textContent = 'Tier ' + tier + ' Member'; badge.style.display = 'inline-block'; }
+}
+
+// ---- PHASE TOGGLE ----
+function togglePhase(header) {
+  var phase = header.parentElement;
+  var isActive = phase.classList.contains('active');
+  var all = document.querySelectorAll('.phase');
+  for (var i = 0; i < all.length; i++) all[i].classList.remove('active');
+  if (!isActive) phase.classList.add('active');
+}
+
+// ---- CHECKBOXES ----
+function toggleCheck(el) {
+  var item = el.parentElement;
+  var phase = getParentPhase(el);
+  var phaseId = phase.getAttribute('data-phase');
+  var allChecks = phase.querySelectorAll('.milestone-check');
+  var idx = Array.prototype.indexOf.call(allChecks, el);
+  var s = loadState();
+  if (!s.checks) s.checks = {};
+  var key = 'p' + phaseId + '_' + idx;
+  s.checks[key] = !s.checks[key];
+  saveState(s);
+  el.classList.toggle('checked', !!s.checks[key]);
+  item.classList.toggle('checked', !!s.checks[key]);
+  updateCounters();
+  updateCompleted();
+}
+
+function getParentPhase(el) {
+  var node = el;
+  while (node && !node.classList.contains('phase')) node = node.parentElement;
+  return node;
+}
+
+function restoreChecks() {
+  var s = loadState();
+  if (!s.checks) return;
+  var phases = document.querySelectorAll('.phase');
+  for (var i = 0; i < phases.length; i++) {
+    var phaseId = phases[i].getAttribute('data-phase');
+    var checks = phases[i].querySelectorAll('.milestone-check');
+    for (var j = 0; j < checks.length; j++) {
+      var key = 'p' + phaseId + '_' + j;
+      if (s.checks[key]) {
+        checks[j].classList.add('checked');
+        checks[j].parentElement.classList.add('checked');
+      }
+    }
+  }
+}
+
+function updateCounters() {
+  var phases = document.querySelectorAll('.phase');
+  for (var i = 0; i < phases.length; i++) {
+    var total = phases[i].querySelectorAll('.milestone-check').length;
+    var done = phases[i].querySelectorAll('.milestone-check.checked').length;
+    var counter = phases[i].querySelector('.milestone-counter');
+    if (counter) counter.textContent = done + ' / ' + total + ' complete';
+  }
+}
+
+function updateCompleted() {
+  var phases = document.querySelectorAll('.phase');
+  for (var i = 0; i < phases.length; i++) {
+    var total = phases[i].querySelectorAll('.milestone-check').length;
+    var done = phases[i].querySelectorAll('.milestone-check.checked').length;
+    if (total > 0 && done === total) phases[i].classList.add('phase-complete');
+    else phases[i].classList.remove('phase-complete');
+  }
+}
+
+// ---- PROGRESS BANNER ----
+var PHASES = [
+  {id:1,s:0,e:7}, {id:2,s:8,e:14}, {id:3,s:15,e:21},
+  {id:4,s:22,e:28}, {id:5,s:29,e:35}, {id:6,s:36,e:60}
+];
+var PHASE_NAMES = [
+  'Foundation + Activation', 'Build the Deal Investors Chase',
+  'Cold Outreach + Outreach Systems', 'The Investor Call + Closing Framework',
+  'Data Room + Wired & Done', 'Network Introductions + Close'
+];
+
+function getDayNum(dateStr) {
+  var start = new Date(dateStr); start.setHours(0,0,0,0);
+  var today = new Date(); today.setHours(0,0,0,0);
+  return Math.floor((today - start) / 86400000);
+}
+
+function getCurrentPhase(day) {
+  for (var i = PHASES.length - 1; i >= 0; i--) {
+    if (day >= PHASES[i].s) return PHASES[i];
+  }
+  return PHASES[0];
+}
+
+function renderBanner(dateStr) {
+  var day = Math.max(0, getDayNum(dateStr));
+  var capped = Math.min(day, 60);
+  var cur = getCurrentPhase(day);
+  var pct = Math.min(100, Math.round((capped / 60) * 100));
+  var phaseName = PHASE_NAMES[cur.id - 1];
+  var statusText = day > 60 ? 'Program complete' : 'On track';
+  var statusClass = day > 60 ? 'complete' : 'on-track';
+
+  var banner = document.getElementById('progress-banner');
+  banner.innerHTML =
+    '<div class="progress-banner-left">' +
+      '<div class="progress-day">Day ' + capped + '</div>' +
+      '<div class="progress-info">' +
+        '<div class="progress-phase-name">' + phaseName + '</div>' +
+        '<div class="progress-status ' + statusClass + '">' + statusText + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="progress-right">' +
+      '<div class="progress-bar-wrap">' +
+        '<div class="progress-bar-label"><span>Progress</span><span>' + pct + '%</span></div>' +
+        '<div class="progress-bar-track"><div class="progress-bar-fill" style="width:' + pct + '%"></div></div>' +
+      '</div>' +
+      '<button class="reset-date-btn" onclick="resetDate()">Change Date</button>' +
+    '</div>';
+  banner.style.display = 'flex';
+
+  var all = document.querySelectorAll('.phase');
+  for (var i = 0; i < all.length; i++) {
+    all[i].classList.remove('current-phase', 'active');
+  }
+  var curEl = document.querySelector('.phase[data-phase="' + cur.id + '"]');
+  if (curEl) { curEl.classList.add('current-phase', 'active'); }
+}
+
+function renderGreeting(name) {
+  var el = document.getElementById('header-greeting');
+  if (el && name) { el.textContent = name + "'s Action Plan"; el.style.opacity = '1'; }
+}
+
+// ---- MODAL ----
+function showModal() {
+  document.getElementById('start-modal').style.display = 'flex';
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('start-date-input').value = today;
+  var s = loadState();
+  var nameEl = document.getElementById('member-name-input');
+  if (nameEl && s.memberName) nameEl.value = s.memberName;
+}
+
+function hideModal() {
+  document.getElementById('start-modal').style.display = 'none';
+}
+
+function saveStartDate() {
+  var val = document.getElementById('start-date-input').value;
+  if (!val) return;
+  var nameEl = document.getElementById('member-name-input');
+  var name = nameEl ? nameEl.value.trim() : '';
+  var s = loadState();
+  s.startDate = val;
+  if (name) s.memberName = name;
+  saveState(s);
+  hideModal();
+  if (name) renderGreeting(name);
+  renderBanner(val);
+  restoreChecks();
+  updateCounters();
+  updateCompleted();
+}
+
+function resetDate() { showModal(); }
+
+function resetAll() {
+  _mem = {};
+  try { localStorage.removeItem('cu_map_v1'); } catch(e) {}
+  window.location.reload();
+}
+
+// ---- INIT ----
+document.addEventListener('DOMContentLoaded', function() {
+  // Add milestone counters
+  var labels = document.querySelectorAll('.milestones-label');
+  for (var i = 0; i < labels.length; i++) {
+    var counter = document.createElement('span');
+    counter.className = 'milestone-counter';
+    counter.textContent = '0 / 0 complete';
+    labels[i].appendChild(counter);
+  }
+
+  applyTier();
+  restoreChecks();
+  updateCounters();
+  updateCompleted();
+
+  var s = loadState();
+  if (s.startDate) {
+    renderGreeting(s.memberName || '');
+    renderBanner(s.startDate);
+  } else {
+    var first = document.querySelector('.phase');
+    if (first) first.classList.add('active');
+    document.getElementById('progress-banner').style.display = 'none';
+    showModal();
+  }
+});
+</script>
+
+<!-- START DATE MODAL -->
+<div class="modal-overlay" id="start-modal" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-eyebrow">Capital Unlocked</div>
+    <div class="modal-title">Set up your tracker</div>
+    <p class="modal-body">This page tracks your progress through the program. Enter your name and start date and it handles the rest: which phase you're in, whether you're on track, and what to do next.</p>
+    <div class="modal-email-note">
+      <span class="modal-email-icon">&#9993;</span>
+      <span>You'll receive regular emails from Nick throughout the program with video trainings, instructions, and next steps. Videos are in both the emails and The Wealth Circle. Check your inbox and don't let them pile up unread.</span>
+    </div>
+    <div class="modal-input-label">Your First Name</div>
+    <input type="text" class="modal-input" id="member-name-input" placeholder="e.g. Nick" autocomplete="given-name">
+    <div class="modal-input-label">Your Start Date</div>
+    <input type="date" class="modal-input" id="start-date-input">
+    <button class="modal-btn" onclick="saveStartDate()">Set Up My Tracker</button>
+  </div>
+</div>
